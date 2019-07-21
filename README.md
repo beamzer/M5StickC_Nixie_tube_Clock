@@ -1,32 +1,32 @@
 # Nixie tube clock simulated on ESP32 using the device M5Stick-C
-To build a Nixie tube clock is a perpetual project on my mind. But it requires high voltage, expensive and not easy to be wereable. So the feeling I wanted to see was made by software.
+Origninal from [macsbug](https://macsbug.wordpress.com/2019/06/06/m5stickc-nixie-tube-clock/)
+and put onto [github](https://github.com/McOrts/M5StickC_Nixie_tube_Clock) by [McOrts](https://github.com/McOrts) 
 
-<img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick-C.jpg" width="250" align="right" />
+This is a Nixie clock tube display which runs on a M5Stick-C (C stands for colour display)
 
-The perfect opportunity came up to me when I get the M5Stich-C. It is an amazing device based on ESP32 with a small LCD display of 80 × 160 pixel, but bright and clear. 
+<img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick-C.jpg" width="250" align="right" />
+The M5Stick-C is an amazing device based on ESP32-Pico with a small LCD display of 80 × 160 pixel, an 85mAH battery and lots of sensors. 
 
 ## Outcome
 
-<img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC.gif" width="300"/>
+<img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC.gif" width="300"/>
 
-The watch has three faces. You can switch betewen them using the M5 switch.
-- <img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m1.gif" width="200"/>
-- <img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m2.gif" width="200"/>
-- <img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m3.gif" width="200"/>
+The watch has four faces. You can switch between them using the M5 switch.
+- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m1.gif" width="200"/>
+- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m2.gif" width="200"/>
+- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m3.gif" width="200"/>
 
 ## How to
 
-<img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick_Arduino_IDE.PNG" width="300" align="right" />
+<img src="hhttps://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick_Arduino_IDE.PNG" width="300" align="right" />
 
-Previously, it is mandatory install the development environment. If you use the Arduino IDE, exists a perfect guide to start up the device : [M5StickC Quick Start - Arduino Win](https://docs.m5stack.com/#/en/quick_start/m5stickc/m5stickc_quick_start_with_arduino_Windows?id=_2-copy-the-following-esp32-boards-manager-url-to-additional-boards-manager-urls-hit-ok) 
-
-finally this is the configuration that you need to compile the Arduino sketch of M5StickC_Nixie_tube_Clock that you have here in this repository.
+Install the Arduino IDE: [M5StickC Quick Start - Arduino Win](https://docs.m5stack.com/#/en/quick_start/m5stickc/m5stickc_quick_start_with_arduino_Windows?id=_2-copy-the-following-esp32-boards-manager-url-to-additional-boards-manager-urls-hit-ok) 
 
 Now only that you need is plug in the M5Stick whith the USB-C adaptor and load the program. 
 
 ### Update Nixie Tube images
 
-<img src="https://github.com/McOrts/M5StickC_Nixie_tube_Clock/blob/master/lcd-image-converter/lcd_convert_s.jpg" align="right" />
+<img src="hhttps://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/lcd-image-converter/lcd_convert_s.jpg" align="right" />
 
 Execute the lcd-image-converter.exe include in this repository.
 1. Png or Jpg is read from File->Open Menu. The image will be displayed when loaded. 
@@ -41,7 +41,7 @@ Tick: Import All Images You can also output all the images with “Convert ... a
 - Save the example "vfd_35x67_8".c
 
 ### Hardware components
-The [M5Stick-C]() is a device with multiple components as processor, sensors, interrupters and LED. The processor features are:
+The [M5Stick-C](https://m5stack.com/products/stick-c) is a device with multiple components as processor, battery, sensors, switches (3) and two LEDs (on Red LED and an InfraRed LED. The processor features are:
 
 |   |   |
 |---|---|
