@@ -52,7 +52,7 @@ void setup(void){
  
 void loop(void){ 
   if(digitalRead(M5_BUTTON_HOME) == LOW){
-      if (++mode_ == 5) mode_ = 1;
+      if (++mode_ == 5) mode_ = 2;		// switch to mode_ = 1 if you also want the mm:ss watchface
       M5.Lcd.fillScreen(BLACK);
       while (digitalRead(M5_BUTTON_HOME) == LOW) delay(10);         // wait for button release
       }
@@ -60,7 +60,7 @@ void loop(void){
   if ( mode_ == 4 ){ vfd_4_line();}   // hh,mm
   if ( mode_ == 3 ){ vfd_3_line();}   // hh,mm,ss
   if ( mode_ == 2 ){ vfd_2_line();}   // yyyy,mm,dd,hh,mm,ss
-  if ( mode_ == 1 ){ vfd_1_line();}   // mm,ss
+//   if ( mode_ == 1 ){ vfd_1_line();}   // mm,ss => won't be using this one, remove comment if you do
   delay(500);
 }
 
