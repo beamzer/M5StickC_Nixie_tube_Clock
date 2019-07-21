@@ -1,4 +1,4 @@
-// M5StickC Nixie tube Clock: 2019.06.06 
+// M5StickC Nixie tube Clock: 2019.07.21 
 #include <M5StickC.h>
 #include "vfd_18x34.c"
 #include "vfd_35x67.c"
@@ -52,16 +52,34 @@ void setup(void){
  
 void loop(void){ 
   if(digitalRead(M5_BUTTON_HOME) == LOW){
-    if (mode_ == 3){mode_ = 1;M5.Lcd.fillScreen(BLACK);return;}
-    if (mode_ == 2){mode_ = 3;M5.Lcd.fillScreen(BLACK);return;}
-    if (mode_ == 1){mode_ = 2;M5.Lcd.fillScreen(BLACK);return;}
-  }
+      if (++mode_ == 5) mode_ = 1;
+      M5.Lcd.fillScreen(BLACK);
+      while (digitalRead(M5_BUTTON_HOME) == LOW) delay(10);         // wait for button release
+      }
+      
+  if ( mode_ == 4 ){ vfd_4_line();}   // hh,mm
   if ( mode_ == 3 ){ vfd_3_line();}   // hh,mm,ss
   if ( mode_ == 2 ){ vfd_2_line();}   // yyyy,mm,dd,hh,mm,ss
   if ( mode_ == 1 ){ vfd_1_line();}   // mm,ss
   delay(500);
 }
- 
+
+void vfd_4_line(){
+  M5.Rtc.GetTime(&RTC_TimeStruct);
+  M5.Rtc.GetData(&RTC_DateStruct);
+  int h1 = int(RTC_TimeStruct.Hours / 10 );
+  int h2 = int(RTC_TimeStruct.Hours - h1*10 );
+  int i1 = int(RTC_TimeStruct.Minutes / 10 );
+  int i2 = int(RTC_TimeStruct.Minutes - i1*10 );
+  
+  M5.Lcd.pushImage(  2,6,35,67, (uint16_t *)m[h1]);
+  M5.Lcd.pushImage( 41,6,35,67, (uint16_t *)m[h2]);
+  M5.Lcd.drawPixel( 79,28, ORANGE); M5.Lcd.drawPixel( 79,54,ORANGE); 
+  M5.Lcd.drawPixel( 79,27, YELLOW); M5.Lcd.drawPixel( 79,53,YELLOW); 
+  M5.Lcd.pushImage( 83,6,35,67, (uint16_t *)m[i1]);
+  M5.Lcd.pushImage(121,6,35,67, (uint16_t *)m[i2]);
+}
+
 void vfd_3_line(){
   M5.Rtc.GetTime(&RTC_TimeStruct);
   M5.Rtc.GetData(&RTC_DateStruct);
