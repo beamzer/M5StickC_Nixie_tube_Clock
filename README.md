@@ -2,16 +2,17 @@
 Origninal from [macsbug](https://macsbug.wordpress.com/2019/06/06/m5stickc-nixie-tube-clock/)
 and put onto [github](https://github.com/McOrts/M5StickC_Nixie_tube_Clock) by [McOrts](https://github.com/McOrts) 
 
-This is a Nixie clock tube display which runs on a M5Stick-C (C stands for colour display)
+This is a Nixie clock tube display which runs on a [M5Stick-C](https://www.banggood.com/search/m5stickc.html?p=6E2214592974201405G7) (C stands for colour display).
+The link points to banggood where i bought mine and also shows some cheap add-on modules like a speaker, pir-sensor and temp/humidity sensor (link contains affiliate code)
 
 <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick-C.jpg" width="250" align="right" />
-The M5Stick-C is an amazing device based on ESP32-Pico with a small LCD display of 80 × 160 pixel, an 85mAH battery and lots of sensors. 
+This device is amazing because it's small, relatively cheap and packed with sensors to play with. It's based on an ESP32-Pico with a small LCD display of 80 × 160 pixel, an 85mAH battery and lots of sensors (see below for an overview). 
 
 ## Outcome
 
 <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC.gif" width="300"/>
 
-The watch has four faces. You can switch between them using the M5 switch.
+The original sketch had three watch-faces. I have added a forth (not shown below) which show the time in HH:MM format with a blinking semicolon to indicate the seconds. You can switch between them using the M5 switch.
 - <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m1.gif" width="200"/>
 - <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m2.gif" width="200"/>
 - <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m3.gif" width="200"/>
