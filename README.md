@@ -1,4 +1,4 @@
-# Nixie tube clock simulated on ESP32 using the device M5Stick-C
+# Nixie tube clock running on a M5Stick-C
 Origninal from [macsbug](https://macsbug.wordpress.com/2019/06/06/m5stickc-nixie-tube-clock/)
 and put onto [github](https://github.com/McOrts/M5StickC_Nixie_tube_Clock) by [McOrts](https://github.com/McOrts) 
 
