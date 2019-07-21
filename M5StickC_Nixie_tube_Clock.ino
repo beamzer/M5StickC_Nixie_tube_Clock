@@ -1,4 +1,7 @@
 // M5StickC Nixie tube Clock: 2019.07.21 
+// Original: https://macsbug.wordpress.com/
+// mods by Ewald
+
 #include <M5StickC.h>
 #include "vfd_18x34.c"
 #include "vfd_35x67.c"
