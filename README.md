@@ -20,9 +20,9 @@ The watch has four faces. You can switch between them using the M5 switch.
 
 <img src="hhttps://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/M5Stick_Arduino_IDE.PNG" width="300" align="right" />
 
-Install the Arduino IDE: [M5StickC Quick Start - Arduino Win](https://docs.m5stack.com/#/en/quick_start/m5stickc/m5stickc_quick_start_with_arduino_Windows?id=_2-copy-the-following-esp32-boards-manager-url-to-additional-boards-manager-urls-hit-ok) 
+Install the Arduino IDE and configure it for the M5StickC: [M5StickC Quick Start - Arduino Win](https://docs.m5stack.com/#/en/quick_start/m5stickc/m5stickc_quick_start_with_arduino_Windows?id=_2-copy-the-following-esp32-boards-manager-url-to-additional-boards-manager-urls-hit-ok) 
 
-Now only that you need is plug in the M5Stick whith the USB-C adaptor and load the program. 
+Now you only need to load the sketch, compile it and download it to the M5Stick whith the USB-C adaptor. 
 
 ### Update Nixie Tube images
 
