@@ -3,7 +3,8 @@ Origninal from [macsbug](https://macsbug.wordpress.com/2019/06/06/m5stickc-nixie
 and put onto [github](https://github.com/McOrts/M5StickC_Nixie_tube_Clock) by [McOrts](https://github.com/McOrts) 
 
 Mods by [me](https://github.com/beamzer):
-- addedd blinking dots in mode 3+4 to indicate seconds
+- addedd a HH:MM watchface and removed the MM:SS watchface (but it's still there in the code)
+- addedd blinking dots in most mode to indicate seconds
 - addedd brightness control through the side button
 - addedd a new mode which displays HH:MM and a small seconds bar below
 
@@ -18,10 +19,9 @@ This device is amazing because it's small, relatively cheap and packed with sens
 
 <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC.gif" width="300"/>
 
-The original sketch had three watch-faces. I have added a forth (not shown below) which show the time in HH:MM format with a blinking semicolon to indicate the seconds. You can switch between them using the M5 switch.
-- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m1.gif" width="200"/>
-- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m2.gif" width="200"/>
-- <img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m3.gif" width="200"/>
+Switch between watchfaces using the M5 switch. Some examples:  
+<img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m1.gif" width="200"/>  
+<img src="https://github.com/beamzer/M5StickC_Nixie_tube_Clock/blob/master/images/Nixie_Clock_M5StickC_m3.gif" width="200"/>  
 
 ## How to
 
