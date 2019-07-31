@@ -2,11 +2,12 @@
 Origninal from [macsbug](https://macsbug.wordpress.com/2019/06/06/m5stickc-nixie-tube-clock/)
 and put onto [github](https://github.com/McOrts/M5StickC_Nixie_tube_Clock) by [McOrts](https://github.com/McOrts) 
 
-Mods by [me](https://github.com/Beamzer):
+Mods by [me](https://github.com/beamzer):
 - addedd blinking dots in mode 3+4 to indicate seconds
 - addedd brightness control through the side button
 - addedd a new mode which displays HH:MM and a small seconds bar below
 
+-----------
 This is a Nixie clock tube display which runs on a [M5Stick-C](https://www.banggood.com/search/m5stickc.html?p=6E2214592974201405G7) (C stands for colour display).
 The link points to banggood where i bought mine and also shows some cheap add-on modules like a speaker, pir-sensor and temp/humidity sensor (link contains affiliate code)
 
