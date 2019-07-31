@@ -43,7 +43,6 @@ RTC_TimeTypeDef RTC_TimeStruct;
 RTC_DateTypeDef RTC_DateStruct;
 
 int mode_ = 1; // 4:1Line(HH:MM) 3:2Lines(HH:MM+SS), 2:2Lines: yyyy,mm,dd,hh,mm,ss, 1:HH:MM+seconds bar
-int sec = 0;
 
 const uint8_t*n[] = { // vfd font 18x34
   vfd_18x34_0,vfd_18x34_1,vfd_18x34_2,vfd_18x34_3,vfd_18x34_4,
@@ -99,7 +98,6 @@ void loop(void){
       M5.Lcd.fillScreen(BLACK);
       while (digitalRead(M5_BUTTON_HOME) == LOW) delay(10);         // wait for button release
       }
-  if (++sec >= 4) sec = 0;
 
   switch(mode_) {
     case 1: vfd_1_line(); break;          // mm,ss
@@ -108,7 +106,7 @@ void loop(void){
     case 4: vfd_4_line(); break;          // hh,mm
   } //switch 
 
-  delay(500);
+   delay(1000);                           // no need to go any faster
 } //loop
 
 void vfd_4_line(){                  // HH:MM
@@ -118,12 +116,13 @@ void vfd_4_line(){                  // HH:MM
   int h2 = int(RTC_TimeStruct.Hours - h1*10 );
   int i1 = int(RTC_TimeStruct.Minutes / 10 );
   int i2 = int(RTC_TimeStruct.Minutes - i1*10 );
+  int s0 = int(RTC_TimeStruct.Seconds );
   
   M5.Lcd.pushImage(  2,6,35,67, (uint16_t *)m[h1]);
   M5.Lcd.pushImage( 41,6,35,67, (uint16_t *)m[h2]);
   M5.Lcd.pushImage( 83,6,35,67, (uint16_t *)m[i1]);
   M5.Lcd.pushImage(121,6,35,67, (uint16_t *)m[i2]);
-    if (sec < 2) {                                          // this will make the dots blink every second
+    if ((s0 % 2) == 0) {                                          // this will make the dots blink every second
       M5.Lcd.drawPixel( 79,28, ORANGE); M5.Lcd.drawPixel( 79,54,ORANGE);
       M5.Lcd.drawPixel( 79,27, YELLOW); M5.Lcd.drawPixel( 79,53,YELLOW);
       }
@@ -140,8 +139,9 @@ void vfd_3_line(){                  // HH:MM+ss
   int h2 = int(RTC_TimeStruct.Hours - h1*10 );
   int i1 = int(RTC_TimeStruct.Minutes / 10 );
   int i2 = int(RTC_TimeStruct.Minutes - i1*10 );
-  int s1 = int(RTC_TimeStruct.Seconds / 10 );
-  int s2 = int(RTC_TimeStruct.Seconds - s1*10 );
+  int s0 = int(RTC_TimeStruct.Seconds );
+  int s1 = int(s0 / 10 );
+  int s2 = int(s0 - s1*10 );
   
   M5.Lcd.pushImage(  2,0,35,67, (uint16_t *)m[h1]);
   M5.Lcd.pushImage( 41,0,35,67, (uint16_t *)m[h2]);
@@ -149,7 +149,7 @@ void vfd_3_line(){                  // HH:MM+ss
   M5.Lcd.pushImage(121,0,35,67, (uint16_t *)m[i2]);
   M5.Lcd.pushImage(120,45,18,34, (uint16_t *)n[s1]);
   M5.Lcd.pushImage(140,45,18,34, (uint16_t *)n[s2]);
-    if (sec < 2) {                                          // this will make the dots blink every second
+    if ((s0 % 2) == 0) {                                    // this will make the dots blink every second
       M5.Lcd.drawPixel( 79,28, BLACK); M5.Lcd.drawPixel( 79,54,BLACK);
       M5.Lcd.drawPixel( 79,27, BLACK); M5.Lcd.drawPixel( 79,53,BLACK);
       }
@@ -217,7 +217,7 @@ void vfd_1_line(){
   int s0 = int(RTC_TimeStruct.Seconds);
   int s1 = (s0 * 2.7);                   // scale to screen width (60s = 160 pixel)
   
-  if (0 == s0 && 0 == sec) M5.Lcd.fillScreen(BLACK);
+  if (0 == s0) M5.Lcd.fillScreen(BLACK);
   
   M5.Lcd.pushImage(  2,0,35,67, (uint16_t *)m[h1]);
   M5.Lcd.pushImage( 41,0,35,67, (uint16_t *)m[h2]);
@@ -225,7 +225,7 @@ void vfd_1_line(){
   M5.Lcd.pushImage( 83,0,35,67, (uint16_t *)m[i1]);
   M5.Lcd.pushImage(121,0,35,67, (uint16_t *)m[i2]);
 
-    if (sec < 2) {                                          // this will make the dots blink every second
+    if ((s0 % 2) == 0) {                                          // this will make the dots blink every second
       M5.Lcd.drawPixel( 79,28, BLACK); M5.Lcd.drawPixel( 79,54,BLACK);
       M5.Lcd.drawPixel( 79,27, BLACK); M5.Lcd.drawPixel( 79,53,BLACK);
       }
