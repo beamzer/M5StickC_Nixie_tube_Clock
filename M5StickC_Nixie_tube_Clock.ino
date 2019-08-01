@@ -4,6 +4,7 @@
 // 20190721 addedd blinking dots in mode 3+4 to indicate seconds
 // 20190731 addedd brightness control
 //          addedd HH:MM mode with seconds bar
+// 20190801 home button handling via ISR
 
 #include <M5StickC.h>
 #include "vfd_18x34.c"
@@ -19,6 +20,7 @@ int BUTTON_PIN = 39;
 unsigned long last_isr_time;
 uint8_t lcd_brightness = LCD_DEFAULT_BRIGHTNESS;
 boolean lcd_brightness_changed = true;    // will trigger initial setting of brightness to LCD_DEFAULT_BRIGHTNESS
+boolean black = false;
 
 void check_lcd_brightness_change() {
   if (lcd_brightness_changed) {
@@ -38,11 +40,20 @@ void button_isr() {
 } //button_isr
 //############# end brightness stuff
 
+unsigned long home_isr_time;
+int mode_ = 1; // 4:1Line(HH:MM) 3:2Lines(HH:MM+SS), 2:2Lines: yyyy,mm,dd,hh,mm,ss, 1:HH:MM+seconds bar
+
+void home_isr() {
+  if (millis() - home_isr_time < ISR_DITHERING_TIME_MS) {
+    return;
+  }
+  home_isr_time = millis();
+  if (++mode_ >= 5) mode_ = 1;
+  black = true;
+} //button_isr
 
 RTC_TimeTypeDef RTC_TimeStruct;
 RTC_DateTypeDef RTC_DateStruct;
-
-int mode_ = 1; // 4:1Line(HH:MM) 3:2Lines(HH:MM+SS), 2:2Lines: yyyy,mm,dd,hh,mm,ss, 1:HH:MM+seconds bar
 
 const uint8_t*n[] = { // vfd font 18x34
   vfd_18x34_0,vfd_18x34_1,vfd_18x34_2,vfd_18x34_3,vfd_18x34_4,
@@ -58,14 +69,15 @@ const char *monthName[12] = {
 void setup(void){ 
   M5.begin();
   
-  pinMode(M5_BUTTON_HOME, INPUT);                                           // mode control
+  pinMode(M5_BUTTON_HOME, INPUT);
   pinMode(BUTTON_PIN, INPUT | PULLUP);
-  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), button_isr, FALLING);  // brightness control
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), button_isr, FALLING);    // brightness control
+  attachInterrupt(digitalPinToInterrupt(M5_BUTTON_HOME), home_isr, FALLING);  // mode control
 
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setRotation(1);
   
-  // rtc setup start ---------------------------------------------
+  // ############## rtc setup start ---------------------------------------------
   String pt = (__DATE__ " " __TIME__); // PC DATE TIME READ
   //000000000011111111112  Read data
   //012345678901234567890
@@ -86,27 +98,22 @@ void setup(void){
   TimeStruct.Minutes = (pt.substring(15,17)).toInt();
   TimeStruct.Seconds = (pt.substring(18,20)).toInt();
   M5.Rtc.SetTime(&TimeStruct);
-  // rtc setup end -----------------------------------------------
+  // ############## rtc setup end -----------------------------------------------
   
 } //setup
  
 void loop(void){ 
   check_lcd_brightness_change();
-  
-  if(digitalRead(M5_BUTTON_HOME) == LOW){
-      if (++mode_ == 5) mode_ = 1;
-      M5.Lcd.fillScreen(BLACK);
-      while (digitalRead(M5_BUTTON_HOME) == LOW) delay(10);         // wait for button release
-      }
+  if (black) { M5.Lcd.fillScreen(BLACK); black=false; }
 
   switch(mode_) {
-    case 1: vfd_1_line(); break;          // mm,ss
+    case 1: vfd_1_line(); break;          // hh,mm + Seconds bar
     case 2: vfd_2_line(); break;          // yyyy,mm,dd,hh,mm,ss
     case 3: vfd_3_line(); break;          // hh,mm,ss
     case 4: vfd_4_line(); break;          // hh,mm
   } //switch 
 
-   delay(1000);                           // no need to go any faster
+  delay(1000);                           // no need to go any faster
 } //loop
 
 void vfd_4_line(){                  // HH:MM
@@ -181,33 +188,45 @@ void vfd_2_line(){          // yyyy,mm,dd + hh,mm,ss
   int h2 = int(RTC_TimeStruct.Hours   - h1*10 );
   int i1 = int(RTC_TimeStruct.Minutes / 10 );
   int i2 = int(RTC_TimeStruct.Minutes - i1*10 );
-  int s1 = int(RTC_TimeStruct.Seconds / 10 );
-  int s2 = int(RTC_TimeStruct.Seconds - s1*10 );
+  int s0 = int(RTC_TimeStruct.Seconds);
+  int s1 = int(s0 / 10 );
+  int s2 = int(s0 - s1*10 );
    
   M5.Lcd.pushImage(  0, 0,18,34, (uint16_t *)n[y1]); 
   M5.Lcd.pushImage( 19, 0,18,34, (uint16_t *)n[y2]);
   M5.Lcd.pushImage( 38, 0,18,34, (uint16_t *)n[y3]);
   M5.Lcd.pushImage( 57, 0,18,34, (uint16_t *)n[y4]);
-  M5.Lcd.drawPixel( 77,13, ORANGE); M5.Lcd.drawPixel( 77,23,ORANGE);
+  
   M5.Lcd.pushImage( 80, 0,18,34, (uint16_t *)n[j1]);
   M5.Lcd.pushImage( 99, 0,18,34, (uint16_t *)n[j2]);
-  M5.Lcd.drawPixel(118,13, ORANGE); M5.Lcd.drawPixel(119,23,ORANGE);
+  
   M5.Lcd.pushImage(120, 0,18,34, (uint16_t *)n[d1]);
   M5.Lcd.pushImage(140, 0,18,34, (uint16_t *)n[d2]);
                                                     
   M5.Lcd.pushImage( 00,40,18,34, (uint16_t *)n[h1]);
   M5.Lcd.pushImage( 20,40,18,34, (uint16_t *)n[h2]);
-  M5.Lcd.drawPixel( 48,54, ORANGE); M5.Lcd.drawPixel( 48,64,ORANGE); 
+   
   M5.Lcd.pushImage( 60,40,18,34, (uint16_t *)n[i1]);
   M5.Lcd.pushImage( 80,40,18,34, (uint16_t *)n[i2]);
-  M5.Lcd.drawPixel(108,54, ORANGE); M5.Lcd.drawPixel(108,64,ORANGE);
+  
   M5.Lcd.pushImage(120,40,18,34, (uint16_t *)n[s1]);
   M5.Lcd.pushImage(140,40,18,34, (uint16_t *)n[s2]);
+  if ((s0 % 2) == 0) {                                          // this will make the dots blink every second
+    M5.Lcd.drawPixel( 77,13, ORANGE); M5.Lcd.drawPixel( 77,23,ORANGE);
+    M5.Lcd.drawPixel(118,13, ORANGE); M5.Lcd.drawPixel(119,23,ORANGE);
+    M5.Lcd.drawPixel( 48,54, ORANGE); M5.Lcd.drawPixel( 48,64,ORANGE);
+    M5.Lcd.drawPixel(108,54, ORANGE); M5.Lcd.drawPixel(108,64,ORANGE);
+  } else {
+    M5.Lcd.drawPixel( 77,13, BLACK); M5.Lcd.drawPixel( 77,23,BLACK);
+    M5.Lcd.drawPixel(118,13, BLACK); M5.Lcd.drawPixel(119,23,BLACK);
+    M5.Lcd.drawPixel( 48,54, BLACK); M5.Lcd.drawPixel( 48,64,BLACK);
+    M5.Lcd.drawPixel(108,54, BLACK); M5.Lcd.drawPixel(108,64,BLACK);      
+     }
  
   // if ( i1 == 0 && i2 == 0 ){ fade();}
 } //vfd_2_line
 
-void vfd_1_line(){
+void vfd_1_line(){              // hh,mm + Seconds bar
   M5.Rtc.GetTime(&RTC_TimeStruct);
   M5.Rtc.GetData(&RTC_DateStruct);
   int h1 = int(RTC_TimeStruct.Hours / 10 );
